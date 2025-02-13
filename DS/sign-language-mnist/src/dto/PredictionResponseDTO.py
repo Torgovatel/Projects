@@ -3,12 +3,27 @@ from typing import Dict
 
 
 class PredictionResponseDTO(BaseModel):
+    """
+    A data transfer object (DTO) representing the response of a prediction model.
+
+    :param prediction: The predicted class represented as a single uppercase letter (A-Z).
+    :param probabilities: A dictionary where keys are uppercase letters (A-Z), and values are probabilities (float)
+                          between 0 and 1 that sum to 1 across all keys.
+
+    :result: Returns an instance of PredictionResponseDTO with the provided prediction and probabilities.
+    """
+
     prediction: constr(min_length=1, max_length=1, pattern=r"^[A-Z]$")
     probabilities: Dict[
         constr(min_length=1, max_length=1, pattern=r"^[A-Z]$"), condecimal(ge=0, le=1)
     ]
 
     class Config:
+        """
+        Configuration for the PredictionResponseDTO class.
+        - Provides an example schema for JSON serialization and documentation purposes.
+        """
+
         json_schema_extra = {
             "example": {
                 "prediction": "B",
