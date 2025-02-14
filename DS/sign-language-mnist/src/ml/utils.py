@@ -20,9 +20,12 @@ class TClassifier(Enum):
     Enum for classifier types.
 
     :param CNN: Refers to the CNN classifier model.
+    :type CNN: str
     :param PERCEPTRON: Refers to the perceptron classifier model.
+    :type PERCEPTRON: str
 
-    :result: Returns an enum value representing the classifier type.
+    :returns: Enum value representing the classifier type.
+    :rtype: TClassifier
     """
 
     CNN = "cnn"
@@ -37,7 +40,9 @@ class ClassifierAdapter:
         Initialize the adapter with classifier model and torch device.
 
         :param model: The model to be used for predictions (CNN or Perceptron).
+        :type model: ClassifierModel
         :param device: The device on which the model should run (default is CUDA or CPU).
+        :type device: torch.device, optional
         """
         self.model = model
         self.device = device or torch.device(
@@ -51,6 +56,7 @@ class ClassifierAdapter:
         Load model weights from a given file path.
 
         :param path: Path to the model weights file.
+        :type path: str
         """
         self.model.load_state_dict(torch.load(path, map_location=self.device))
         self.model.to(self.device)
@@ -61,10 +67,12 @@ class ClassifierAdapter:
         Make a prediction using the classifier model.
 
         :param X: Input tensor to make the prediction on shape: (batch_size, channels, height, width).
+        :type X: torch.Tensor
 
         :return: Returns a tuple consisting of:
-        - label (str): The predicted class.
-        - ProbabilityDict (Dict[str, float]): A dictionary of class probabilities.
+            - label (str): The predicted class.
+            - ProbabilityDict (Dict[str, float]): A dictionary of class probabilities.
+        :rtype: Tuple[str, ProbabilityDict]
         """
         with torch.no_grad():
             X = X.to(self.device)
@@ -82,9 +90,11 @@ class Converter:
         Convert an image (in BytesIO format) to a tensor.
 
         :param image: The image in BytesIO format.
+        :type image: BytesIO
 
         :return: Returns a tensor representing the grayscale image of shape (1, 1, 28, 28),
                  with pixel values normalized to the range [0, 1] and of type torch.float32.
+        :rtype: torch.Tensor
         """
         try:
             img = Image.open(image).convert("L").resize((28, 28))
@@ -99,8 +109,10 @@ class Converter:
         Convert a tensor to an image.
 
         :param tensor: The tensor to be converted into an image (shape: (1, 28, 28) or (28, 28)).
+        :type tensor: torch.Tensor
 
         :return: Returns a PIL image of the tensor.
+        :rtype: Image.Image
         """
         if tensor.dim() == 3 and tensor.shape[0] == 1:
             tensor = tensor.squeeze(0)
@@ -123,9 +135,12 @@ class ClassifierFactory:
         Creates an adapter for the specified classifier model.
 
         :param model_name: The classifier model to use (either CNN or Perceptron).
+        :type model_name: TClassifier
         :param device: The device on which the model should run (default is CUDA or CPU).
+        :type device: torch.device, optional
 
         :return: Returns a ClassifierAdapter instance initialized with the specified model.
+        :rtype: ClassifierAdapter
         """
         if model_name == TClassifier.CNN:
             model = CNNClassifier(output_size=25)

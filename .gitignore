@@ -3,3 +3,5 @@
 !/DS/study-tsu-rent-ra/dataset
 /**/__pycache__
 /**/*.db
+/**/.env
+/**/*.log

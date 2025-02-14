@@ -1,5 +1,11 @@
 # Описание
 
+**Способы взаимодействия:**  
+- REST API по пути http://localhost:8080/api/v1/predict
+- Телеграм бот [@SignRecognizerBot](https://t.me/SignRecognizerBot)
+
+В случае бота инструкции описаны в нём же, а для первого варианта тест можно провести через [Swagger UI](http://localhost:8080/) 
+
 **Входные данные:**  
 Изображения 28x28 пикселей в градациях серого из [датасета](https://www.kaggle.com/datasets/datamunge/sign-language-mnist/data).  
 

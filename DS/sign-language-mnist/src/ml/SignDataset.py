@@ -13,27 +13,44 @@ class SignDataset(data.Dataset):
     columns represent pixel values of the image in row-major order.
 
     The pixel values are normalized to the range [0, 1] and reshaped to (1, 28, 28).
+
+    :param path: Path to the CSV file containing the dataset.
+    :type path: str
+
+    :returns: A dataset object that can be used for training and evaluation.
+    :rtype: SignDataset
     """
 
     def __init__(self, path: str):
-        """Initialize the dataset by loading data from a CSV file.
+        """
+        Initialize the dataset by loading data from a CSV file.
 
         :param path: Path to the CSV file containing the dataset.
+        :type path: str
         """
         self.path = path
         self.data = pd.read_csv(path)
 
     def __len__(self) -> int:
-        """Return the number of samples in the dataset."""
+        """
+        Return the number of samples in the dataset.
+
+        :return: The number of samples in the dataset.
+        :rtype: int
+        """
         return len(self.data)
 
-    def __getitem__(self, idx: int) -> Tuple[int, torch.Tensor]:
-        """Retrieve the image and label at the given index.
+    def __getitem__(self, idx: int) -> Tuple[torch.Tensor, torch.Tensor]:
+        """
+        Retrieve the image and label at the given index.
 
         :param idx: Index of the sample.
-        :return: A tuple (tensor, label), where:
-        - tensor (torch.Tensor): A 28x28 image tensor of shape (1, 28, 28), normalized to [0, 1].
-        - label (torch.Tensor): A tensor containing the class label as uint8.
+        :type idx: int
+
+        :return: A tuple containing:
+            - tensor: A 28x28 image tensor of shape (1, 28, 28), normalized to [0, 1].
+            - label: A tensor containing the class label as uint8.
+        :rtype: Tuple[torch.Tensor, torch.Tensor]
         """
         row = self.data.iloc[idx]
         label = torch.tensor(row.iloc[0], dtype=torch.uint8)

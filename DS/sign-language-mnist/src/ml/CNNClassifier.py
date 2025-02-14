@@ -7,11 +7,15 @@ class CNNClassifier(nn.Module):
     """
     A simple convolutional neural network (CNN) for image classification.
 
-    This model consists of:
+    The model consists of:
     - Two convolutional layers with ReLU activation and max pooling.
     - Two fully connected (linear) layers.
 
-    The input is expected to be a grayscale image tensor of shape (batch_size, 1, 28, 28).
+    :param output_size: Number of output classes.
+    :type output_size: int
+
+    :returns: A CNN model for image classification.
+    :rtype: CNNClassifier
     """
 
     def __init__(self, output_size: int):
@@ -19,6 +23,7 @@ class CNNClassifier(nn.Module):
         Initialize the CNN model with convolutional and linear layers.
 
         :param output_size: Number of output classes.
+        :type output_size: int
         """
         super().__init__()
         self.conv1: nn.Conv2d = nn.Conv2d(
@@ -33,10 +38,14 @@ class CNNClassifier(nn.Module):
         self.linear2: nn.Linear = nn.Linear(128, output_size)
 
     def forward(self, x: Tensor) -> Tensor:
-        """Perform a forward pass through the network.
+        """
+        Perform a forward pass through the network.
 
         :param x: Input tensor of shape (batch_size, 1, 28, 28).
+        :type x: Tensor
+
         :return: Output tensor of shape (batch_size, output_size), representing raw model outputs (scores).
+        :rtype: Tensor
         """
         x = self.pool(F.relu(self.conv1(x)))
         x = self.pool(F.relu(self.conv2(x)))

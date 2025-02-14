@@ -4,13 +4,20 @@ from typing import Dict
 
 class PredictionResponseDTO(BaseModel):
     """
-    A data transfer object (DTO) representing the response of a prediction model.
+    A data transfer object (DTO) representing a prediction response.
 
-    :param prediction: The predicted class represented as a single uppercase letter (A-Z).
-    :param probabilities: A dictionary where keys are uppercase letters (A-Z), and values are probabilities (float)
-                          between 0 and 1 that sum to 1 across all keys.
+    This model contains the predicted label and a dictionary of probabilities
+    for each class.
 
-    :result: Returns an instance of PredictionResponseDTO with the provided prediction and probabilities.
+    :param prediction: The predicted label, a single uppercase letter (A-Z).
+    :type prediction: str
+    :param probabilities: A dictionary of class probabilities where keys are
+                          uppercase letters (A-Z) and values are decimal numbers
+                          between 0 and 1, inclusive.
+    :type probabilities: Dict[str, float]
+
+    :returns: A structured response containing prediction and probabilities.
+    :rtype: PredictionResponseDTO
     """
 
     prediction: constr(min_length=1, max_length=1, pattern=r"^[A-Z]$")
@@ -19,10 +26,7 @@ class PredictionResponseDTO(BaseModel):
     ]
 
     class Config:
-        """
-        Configuration for the PredictionResponseDTO class.
-        - Provides an example schema for JSON serialization and documentation purposes.
-        """
+        """Pydantic model configuration."""
 
         json_schema_extra = {
             "example": {
