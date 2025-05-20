@@ -3,12 +3,31 @@ from typing import Dict
 
 
 class PredictionResponseDTO(BaseModel):
+    """
+    A data transfer object (DTO) representing a prediction response.
+
+    This model contains the predicted label and a dictionary of probabilities
+    for each class.
+
+    :param prediction: The predicted label, a single uppercase letter (A-Z).
+    :type prediction: str
+    :param probabilities: A dictionary of class probabilities where keys are
+                          uppercase letters (A-Z) and values are decimal numbers
+                          between 0 and 1, inclusive.
+    :type probabilities: Dict[str, float]
+
+    :returns: A structured response containing prediction and probabilities.
+    :rtype: PredictionResponseDTO
+    """
+
     prediction: constr(min_length=1, max_length=1, pattern=r"^[A-Z]$")
     probabilities: Dict[
         constr(min_length=1, max_length=1, pattern=r"^[A-Z]$"), condecimal(ge=0, le=1)
     ]
 
     class Config:
+        """Pydantic model configuration."""
+
         json_schema_extra = {
             "example": {
                 "prediction": "B",
